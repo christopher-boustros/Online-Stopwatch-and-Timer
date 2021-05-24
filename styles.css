@@ -1,0 +1,32 @@
+.display {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 64px;
+    font-weight: bold;
+    text-align: center;
+    background-color: aliceblue;
+    width: 460px;
+    height: 70px;
+    margin: 0 auto;
+}
+
+.buttons {
+    text-align: center;
+    width: 460px;
+    height: 30px;
+    margin: 0 auto;
+    background-color: rgb(230, 230, 230);
+}
+
+.button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    width: 90px;
+    height: 20px;
+    margin-top: 5px;
+}
+
+#startStop {
+    background-color:blue;
+    color: white;
+}
