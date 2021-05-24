@@ -39,7 +39,7 @@ function displayStopwatchValues() {
     let _hours = currentHours < 10 ? "0" + currentHours : currentHours;
     
     // Display the strings
-    document.getElementById("display").innerHTML = _hours + ":" + _minutes + ":" + _seconds + "." + _centiseconds;
+    document.getElementById("stopwatchDisplay").innerHTML = _hours + ":" + _minutes + ":" + _seconds + "." + _centiseconds;
 }
 
 // Updates the stopwatch values and displays the new values

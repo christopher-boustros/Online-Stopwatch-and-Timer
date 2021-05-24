@@ -6,15 +6,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stopwatch</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="text/javascript" src="script.js"></script>
+  <script type="text/javascript" src="stopwatchScript.js"></script>
+  <script type="text/javascript" src="timerScript.js"></script>
 </head>
 <body>
-  <div id="display">
+  <h2 style="text-align: center;">Stopwatch</h2>
+  <div class="display" id="stopwatchDisplay">
     00:00:00.00
   </div>
   <div class="buttons">
     <button class="button" id="startStop" onclick="startStopButton()">START</button>
     <button class="button" id="reset" onclick="resetButton()">RESET</button>
+  </div>
+  <br><br><br>
+  <h2 style="text-align: center;">Timer</h2>
+  <div class="display" id="timerDisplay">
+    00:00:00
+  </div>
+  <div class=dropdownBoxes>
+    <label for="selectHours">Hours:</label>
+    <select class="dropdownBox" name="hours" id="selectHours">
+      <script>
+        var wrapper = document.getElementById("selectHours");
+        var wrapperInnerHTML = '';
+        for (var i = 0; i < 100; i++) {
+          wrapperInnerHTML += '<option value=\"' + i + '\">' + i + '</option>';
+        }
+        wrapper.innerHTML = wrapperInnerHTML;
+      </script>
+    </select>
+    <label for="selectMinutes">Minutes:</label>
+    <select class="dropdownBox" name="minutes" id="selectMinutes">
+      <script>
+        var wrapper = document.getElementById("selectMinutes");
+        var wrapperInnerHTML = '';
+        for (var i = 0; i < 60; i++) {
+          wrapperInnerHTML += '<option value=\"' + i + '\">' + i + '</option>';
+        }
+        wrapper.innerHTML = wrapperInnerHTML;
+      </script>
+    </select>
+    <label for="selectSeconds">Seconds:</label>
+    <select class="dropdownBox" name="seconds" id="selectSeconds">
+      <script>
+        var wrapper = document.getElementById("selectSeconds");
+        var wrapperInnerHTML = '';
+        for (var i = 0; i < 60; i++) {
+          wrapperInnerHTML += '<option value=\"' + i + '\">' + i + '</option>';
+        }
+        wrapper.innerHTML = wrapperInnerHTML;
+      </script>
+    </select>
+  </div>
+  <div class="buttons">
+    <button class="button" id="startPause" onclick="startPauseButton()">START</button>
+    <button class="button" id="cancel" onclick="cancelButton()">CANCEL</button>
   </div>
 </body>
 </html>
