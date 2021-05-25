@@ -92,6 +92,7 @@ function resetButton() {
 /*
  * TIMER FUNCTIONS
  */
+
 // Stores the current timer values for hours, minutes, seconds, and miliseconds
 let currentTimerHours, currentTimerMinutes, currentTimerSeconds, currentTimerMiliseconds = 0;
 
