@@ -12,7 +12,7 @@ let stopwatchStarted = false;
 let lastStopwatchStartTime = 0;
 
 // Stores the number of miliseconds since the last time the stopwatch was stopped
-let lastMilisecondsCount = 0;
+let lastStopwatchMilisecondsCount = 0;
 
 // Stores the stopwatch window interval function
 let stopwatchWindowInterval = null;
@@ -23,7 +23,7 @@ const UPDATE_INTERVAL = 5;
 // Updates the current stopwatch values
 function updateStopwatchValues() {
     var timeSinceStart = getCurrentTimeMiliseconds() - lastStopwatchStartTime; // The number of miliseconds since the last start
-    var newMilisecondsCount = timeSinceStart + lastMilisecondsCount; // Compute the new count of the stopwatch in miliseconds
+    var newMilisecondsCount = timeSinceStart + lastStopwatchMilisecondsCount; // Compute the new count of the stopwatch in miliseconds
 
     // Update the hours, minutes, seconds, and miliseconds from the new count
     var values = convertFromMiliseconds(newMilisecondsCount);
@@ -56,7 +56,7 @@ function updateAndDisplayStopwatch() {
 function startStopButton() {
     if (stopwatchStarted) { // Stopwatch was started
         // Stop the stopwatch
-        lastMilisecondsCount = convertToMiliseconds(currentStopwatchHours, currentStopwatchMinutes, currentStopwatchSeconds, currentStopwatchMiliseconds); // Get the count in miliseconds
+        lastStopwatchMilisecondsCount = convertToMiliseconds(currentStopwatchHours, currentStopwatchMinutes, currentStopwatchSeconds, currentStopwatchMiliseconds); // Get the count in miliseconds
         window.clearInterval(stopwatchWindowInterval); // Stop the stopwatch
         document.getElementById("startStop").innerHTML = "START"; // Change the button
         stopwatchStarted = false; // The stopwatch is now stopped
@@ -83,7 +83,7 @@ function resetButton() {
     currentStopwatchMiliseconds = 0;
     
     // Reset the last count
-    lastMilisecondsCount = 0;
+    lastStopwatchMilisecondsCount = 0;
 
     // Update the display
     displayStopwatchValues();
@@ -98,8 +98,8 @@ let currentTimerHours, currentTimerMinutes, currentTimerSeconds, currentTimerMil
 // Stores the initial timer values for hours, minutes, and seconds
 let initialTimerHours, initialTimerMinutes, initialTimerSeconds = 0;
 
-// Stores the initial miliseconds count
-let initialTimerMilisecondsCount = 0;
+// Stores the initial time chosen by the user converted to miliseconds
+let initialTimerMilisecondsChosen = 0;
 
 // Stores the current state of the timer
 let timerState = 0; // 0 -> canceled, 1 -> started, 2 -> paused
@@ -118,24 +118,29 @@ const TIMER_UPDATE_INTERVAL = 5;
 
 // Updates the current timer values
 function updateTimerValues() {
-    var timeSinceStart = getCurrentTimeMiliseconds() - lastStartTime; // The number of miliseconds since the last start
-    var newMilisecondsCount = timeSinceStart + lastMilisecondsCount; // Compute the new count of the timer in miliseconds
-    var invertedNewMilisecondsCount = initialTimerMilisecondsCount - newMilisecondsCount; // Invert the count
+    var timeSinceStart = getCurrentTimeMiliseconds() - lastTimerStartTime; // The number of miliseconds since the last start
+    var newMilisecondsCount = lastTimerMilisecondsCount - timeSinceStart; // Compute the new count of the timer in miliseconds
 
-    // Update the hours, minutes, seconds, and miliseconds from the new inverted count
-    var values = convertFromMiliseconds(invertedNewMilisecondsCount);
-    currentHours = values[0];
-    currentMinutes = values[1];
-    currentSeconds = values[2];
-    currentMiliseconds = values[3];
+    // Update the hours, minutes, seconds, and miliseconds from the new count
+    var values = convertFromMiliseconds(newMilisecondsCount);
+    currentTimerHours = values[0];
+    currentTimerMinutes = values[1];
+    currentTimerSeconds = values[2];
+    currentTimerMiliseconds = values[3];
+
+    // Check if the timer has ended
+    if (currentTimerHours <= 0 && currentTimerMinutes <= 0 && currentTimerSeconds <= 0) {
+        // Stop the timer
+        timerEnded();
+    }
 }
 
 // Displays the current timer values
 function displayTimerValues() {
     // Create the strings to display (add a leading '0' to values that are less than 10)
-    var _seconds = currentSeconds < 10 ? "0" + currentSeconds : currentSeconds;
-    var _minutes = currentMinutes < 10 ? "0" + currentMinutes : currentMinutes;
-    var _hours = currentHours < 10 ? "0" + currentHours : currentHours;
+    var _seconds = currentTimerSeconds < 10 ? "0" + currentTimerSeconds : currentTimerSeconds;
+    var _minutes = currentTimerMinutes < 10 ? "0" + currentTimerMinutes : currentTimerMinutes;
+    var _hours = currentTimerHours < 10 ? "0" + currentTimerHours : currentTimerHours;
     
     // Display the strings
     document.getElementById("timerDisplay").innerHTML = _hours + ":" + _minutes + ":" + _seconds;
@@ -151,8 +156,9 @@ function updateAndDisplayTimer() {
 function startPauseButton() {
     if (timerState === 1) { // Timer was started
         // Pause the timer
-        lastMilisecondsCount = convertToMiliseconds(currentHours, currentMinutes, currentSeconds, currentMiliseconds); // Get the count in miliseconds
-        window.clearInterval(windowInterval); // Stop the timer
+        lastTimerMilisecondsCount = convertToMiliseconds(currentTimerHours, currentTimerMinutes, currentTimerSeconds, currentTimerMiliseconds); // Get the count in miliseconds
+        console.log(lastTimerMilisecondsCount);
+        window.clearInterval(timerWindowInterval); // Stop the timer
         document.getElementById("startPause").innerHTML = "START"; // Change the button
         timerState = 2; // The timer is now paused
     }
@@ -171,9 +177,15 @@ function startPauseButton() {
         }
 
         // Start the timer
-        lastStartTime = getCurrentTimeMiliseconds(); // Store the start time
-        windowInterval = window.setInterval(updateAndDisplayTimer, UPDATE_INTERVAL); // Start the timer (updates every UPDATE_INTERVAL)
+        lastTimerStartTime = getCurrentTimeMiliseconds(); // Store the start time
+        initialTimerMilisecondsChosen = convertToMiliseconds(initialTimerHours, initialTimerMinutes, initialTimerSeconds, 0);
+        if (timerState === 0) { // It was canceled
+            lastTimerMilisecondsCount = initialTimerMilisecondsChosen; // Set the last count to be the initial count
+            lastTimerMilisecondsCount += 999; // Add one second when starting for the first time so that the timer displays the correct number of seconds at the beginning
+        }
+        timerWindowInterval = window.setInterval(updateAndDisplayTimer, UPDATE_INTERVAL); // Start the timer (updates every UPDATE_INTERVAL)
         document.getElementById("startPause").innerHTML = "PAUSE"; // Change the button
+        document.getElementById("timerDisplay").style.color = "black"; // Change the text color to black
         timerState = 1; // The timer is now started
     }
 }
@@ -185,10 +197,10 @@ function cancelButton() {
     }
 
     // Reset the timer values
-    currentHours = 0;
-    currentMinutes = 0;
-    currentSeconds = 0;
-    currentMiliseconds = 0;
+    currentTimerHours = 0;
+    currentTimerMinutes = 0;
+    currentTimerSeconds = 0;
+    currentTimerMiliseconds = 0;
 
     // Reset the initial timer values
     initialTimerHours = 0;
@@ -196,10 +208,32 @@ function cancelButton() {
     initialTimerSeconds = 0;
     
     // Reset the last count
-    lastMilisecondsCount = 0;
+    lastTimerMilisecondsCount = 0;
+
+    // Enable the dropdown boxes
+    var hoursSelection = document.getElementById("selectHours");
+    hoursSelection.disabled='';
+    var minutesSelection = document.getElementById("selectMinutes");
+    minutesSelection.disabled='';
+    var secondsSelection = document.getElementById("selectSeconds");
+    secondsSelection.disabled='';
 
     // Update the display
     displayTimerValues();
+
+    // Change the text color to black
+    document.getElementById("timerDisplay").style.color = "black";
+
+    // Set the timer state to canceled
+    timerState = 0;
+}
+
+// Performs the actions when the timer reaches 0
+function timerEnded() {
+    cancelButton(); // Cancel the timer
+    
+    // Change the timer display text color to red
+    document.getElementById("timerDisplay").style.color = "red";
 }
 
 /*
