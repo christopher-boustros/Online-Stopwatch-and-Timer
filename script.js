@@ -119,6 +119,13 @@ let lastTimerMilisecondsCount = 0;
 // Stores the timer window interval function
 let timerWindowInterval = null;
 
+// Create an Audio object for the alarm sound
+let alarmSound = new Audio("alarm.wav");
+alarmSound.volume = 0.05;
+
+// Stores the timeout function for the alarm sound
+let alarmSoundTimeout = null;
+
 // Defines the number of miliseconds between timer updates
 const TIMER_UPDATE_INTERVAL = 5;
 
@@ -135,7 +142,7 @@ function updateTimerValues() {
     currentTimerMiliseconds = values[3];
 
     // Check if the timer has ended
-    if (currentTimerHours <= 0 && currentTimerMinutes <= 0 && currentTimerSeconds <= 0) {
+    if (hasTimerEnded()) {
         // Stop the timer
         timerEnded();
     }
@@ -163,7 +170,6 @@ function startPauseButton() {
     if (timerState === 1) { // Timer was started
         // Pause the timer
         lastTimerMilisecondsCount = convertToMiliseconds(currentTimerHours, currentTimerMinutes, currentTimerSeconds, currentTimerMiliseconds); // Get the count in miliseconds
-        console.log(lastTimerMilisecondsCount);
         window.clearInterval(timerWindowInterval); // Stop the timer
         document.getElementById("startPause").innerHTML = "START"; // Change the button
         timerState = 2; // The timer is now paused
@@ -191,7 +197,7 @@ function startPauseButton() {
         }
         timerWindowInterval = window.setInterval(updateAndDisplayTimer, UPDATE_INTERVAL); // Start the timer (updates every UPDATE_INTERVAL)
         document.getElementById("startPause").innerHTML = "PAUSE"; // Change the button
-        document.getElementById("timerDisplay").style.color = "black"; // Change the text color to black
+        stopAlarm(); // Stop the alarm
         timerState = 1; // The timer is now started
     }
 }
@@ -227,8 +233,8 @@ function cancelButton() {
     // Update the display
     displayTimerValues();
 
-    // Change the text color to black
-    document.getElementById("timerDisplay").style.color = "black";
+    // Stop the alarm
+    stopAlarm();
 
     // Set the timer state to canceled
     timerState = 0;
@@ -237,9 +243,7 @@ function cancelButton() {
 // Performs the actions when the timer reaches 0
 function timerEnded() {
     cancelButton(); // Cancel the timer
-    
-    // Change the timer display text color to red
-    document.getElementById("timerDisplay").style.color = "red";
+    startAlarm(); // Start the alarm
 }
 
 /*
@@ -265,4 +269,36 @@ function convertFromMiliseconds(miliseconds) {
 // Helper function to get the current time in miliseconds
 function getCurrentTimeMiliseconds() {
     return (new Date()).getTime();
+}
+
+// Helper function to check if the timer has ended
+// Returns true if it has ended, false otherwise
+function hasTimerEnded() {
+    return currentTimerHours <= 0 && currentTimerMinutes <= 0 && currentTimerSeconds <= 0;
+}
+
+// Helper function to start the alarm
+function startAlarm() {
+    // Change the timer display text color to red
+    document.getElementById("timerDisplay").style.color = "red";
+
+    // Play the alarm sound
+    playAlarmSound();
+}
+
+// Helper function to stop the alarm
+function stopAlarm() {
+    document.getElementById("timerDisplay").style.color = "black"; // Change the text color to black
+    alarmSound.pause(); // Stop the alarm sound
+    alarmSound.currentTime = 0; // Ensures the alarm sound will restart from the beginning the next time it plays
+    clearTimeout(alarmSoundTimeout); // Stop the alarm sound timeout
+}
+
+// Helper function to play the alarm sound repeatedly until the timer is started again or canceled
+function playAlarmSound() {
+    // Play the alarm sound
+    alarmSound.play();
+    
+    // Play the alarm sound again after 2.5 seconds
+    alarmSoundTimeout = setTimeout(playAlarmSound, 2500);
 }

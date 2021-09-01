@@ -1,8 +1,8 @@
-# Stopwatch-and-Timer
-![GitHub code size](https://img.shields.io/github/languages/code-size/christopher-boustros/Stopwatch-and-Timer "Code size")
-![GitHub license](https://img.shields.io/github/license/christopher-boustros/Stopwatch-and-Timer "License")
+# Online Stopwatch and Timer
+![GitHub code size](https://img.shields.io/github/languages/code-size/christopher-boustros/Online-Stopwatch-and-Timer "Code size")
+![GitHub license](https://img.shields.io/github/license/christopher-boustros/Online-Stopwatch-and-Timer "License")
 
-A web-based stopwatch and timer application written in HTML5, CSS, and JavaScript. You can run the application on GitHub Pages [**HERE**](https://christopher-boustros.github.io/Stopwatch-and-Timer/)! You can also run the application by cloning this repository on your computer and opening the `index.html` file in a web browser.
+A web-based stopwatch and timer application written in HTML5, CSS, and JavaScript. You can run the application on GitHub Pages [**HERE**](https://christopher-boustros.github.io/Online-Stopwatch-and-Timer/)! You can also run the application by cloning this repository on your computer and opening the `index.html` file in a web browser.
 
 ![Alt text](/Screenshot.png?raw=true "Screenshot")
 
