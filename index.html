@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <script type="text/javascript" src="script.js"></script>
 </head>
-<body>
+<body onload="setClock();">
   <h2 class="title">Stopwatch</h2>
   <div class="display" id="stopwatchDisplay">
     00:00:00.00
@@ -25,7 +25,7 @@
     00:00:00
   </div>
   <div class=dropdownBoxes>
-    <label for="selectHours">Hours:</label>
+    <label for="selectHours">Hours</label>
     <select class="dropdownBox" name="hours" id="selectHours">
       <script>
         var wrapper = document.getElementById("selectHours");
@@ -36,7 +36,7 @@
         wrapper.innerHTML = wrapperInnerHTML;
       </script>
     </select>
-    <label for="selectMinutes">Minutes:</label>
+    <label for="selectMinutes">Minutes</label>
     <select class="dropdownBox" name="minutes" id="selectMinutes">
       <script>
         var wrapper = document.getElementById("selectMinutes");
@@ -47,7 +47,7 @@
         wrapper.innerHTML = wrapperInnerHTML;
       </script>
     </select>
-    <label for="selectSeconds">Seconds:</label>
+    <label for="selectSeconds">Seconds</label>
     <select class="dropdownBox" name="seconds" id="selectSeconds">
       <script>
         var wrapper = document.getElementById("selectSeconds");
@@ -62,6 +62,18 @@
   <div class="buttons">
     <button class="button" id="startPause" onclick="startPauseButton()">START</button>
     <button class="button" id="cancel" onclick="cancelButton()">CANCEL</button>
+  </div>
+  <br>
+  <h2 class="title">Clock</h2>
+  <div id="clock-container">
+	<div id="clock">
+	  <div id="clock-outer-circle"></div>
+      <div id="clock-inner-circle"></div>
+      <div id="clock-hour-hand"></div>
+      <div id="clock-minute-hand"></div>
+      <div id="clock-second-hand"></div>
+      <div id="clock-middle-dot"></div>
+	</div>
   </div>
   <br>
   <div style="width: 460px; margin: 0px auto;">

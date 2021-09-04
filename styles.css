@@ -19,7 +19,7 @@
     background-color: aliceblue;
     width: 460px;
     height: 70px;
-    margin: 0 auto;
+    margin: 0px auto;
     border-radius: 10px 10px 0px 0px;
     border-style: solid;
     border-width: 1px;
@@ -30,7 +30,7 @@
     text-align: center;
     width: 460px;
     height: 30px;
-    margin: 0 auto;
+    margin: 0px auto;
     background-color: rgb(230, 230, 230);
     border-radius: 0px 0px 10px 10px;
     border-style: solid;
@@ -55,7 +55,7 @@
     background-color:rgb(200, 200, 200);
     width: 460px;
     height: 30px;
-    margin: 0 auto;
+    margin: 0px auto;
     border-style: solid;
     border-width: 1px;
     border-color: black;
@@ -79,4 +79,82 @@
 #reset, #cancel {
     background-color:white;
     color: black;
+}
+
+#clock-container {
+	width: 460px;
+	height: 120px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+#clock {
+	width: 120px;
+	height: 120px;
+	margin: 0px auto;
+}
+
+#clock-inner-circle {
+    position: absolute;
+    background: rgb(100, 100, 255);
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
+#clock-outer-circle {
+    position: absolute;
+    background: rgb(200, 200, 255);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+#clock-middle-dot {
+    position: absolute;
+    background: whitesmoke;
+    width: 10px;
+    height: 10px;
+    margin-top: 55px;
+    margin-left: 55px;
+    border-radius: 50%;
+    box-shadow: 3px 3px 8px darkblue;
+}
+
+#clock-minute-hand {
+    position: absolute;
+    background: rgb(245, 245, 255);
+    width: 4px;
+    height: 58px;
+    margin: 2px 60px 58px 58px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 4px darkblue;
+    transform-origin: bottom;
+    transform: rotate(0deg);
+}
+
+#clock-second-hand {
+    position: absolute;
+    background: red;
+    width: 2px;
+    height: 58px;
+    margin: 2px 60px 59px 59px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 5px darkblue;
+    transform-origin: bottom;
+    transform: rotate(30deg);
+}
+
+#clock-hour-hand {
+    position: absolute;
+    background: rgb(210, 210, 255);
+    width: 6px;
+    height: 39px;
+    margin: 21px 60px 57px 57px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 3px darkblue;
+    transform-origin: bottom;
+    transform: rotate(45deg);
 }

@@ -302,3 +302,48 @@ function playAlarmSound() {
     // Play the alarm sound again after 2.5 seconds
     alarmSoundTimeout = setTimeout(playAlarmSound, 2500);
 }
+
+/*
+ * CLOCK FUNCTIONS
+ */
+
+// Stores the hour hand, minute hand, and second hand document elements
+let hourHand = null;
+let minuteHand = null;
+let secondHand = null;
+
+// Stores the timeout to update the clock
+let clockTimeout = null;
+
+// Convers the given hours, minutes, and seconds to degrees
+function convertHoursMinutesSecondsToDegrees(hours, minutes, seconds) {
+    hoursDeg = (hours % 12 + minutes / 60 + seconds / 3600) / 12 * 360;
+    minutesDeg = (minutes + seconds / 60) / 60 * 360;
+    secondsDeg = seconds / 60 * 360;
+    return [hoursDeg, minutesDeg, secondsDeg];
+}
+
+// Sets the clock for the first time
+function setClock() {
+    hourHand = document.getElementById("clock-hour-hand");
+    minuteHand = document.getElementById("clock-minute-hand");
+    secondHand = document.getElementById("clock-second-hand");
+
+    updateClock();
+}
+
+// Updates the clock to display the current time and repeat once every milisecond
+function updateClock() {
+    let date = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    let degrees = convertHoursMinutesSecondsToDegrees(hours, minutes, seconds);
+
+    hourHand.style.transform = "rotate(" + degrees[0] + "deg)";
+    minuteHand.style.transform = "rotate(" + degrees[1] + "deg)";
+    secondHand.style.transform = "rotate(" + degrees[2] + "deg)";
+
+	// Call this function again after 1 milisecond
+    clockTimeout = setTimeout(updateClock, 1);
+}
